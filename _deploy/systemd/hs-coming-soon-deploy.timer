@@ -1,0 +1,11 @@
+[Unit]
+Description=Check GitHub every 5 min and auto-deploy HuffmanStacks coming-soon if changed
+
+[Timer]
+OnBootSec=2min
+OnUnitActiveSec=5min
+AccuracySec=30s
+Persistent=true
+
+[Install]
+WantedBy=timers.target

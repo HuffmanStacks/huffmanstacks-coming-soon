@@ -1,0 +1,10 @@
+[Unit]
+Description=HuffmanStacks coming-soon auto-deploy (pull from GitHub, deploy if changed)
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/opt/hs-coming-soon/auto-deploy.sh
+# Runs as root (default) so go.sh can write /root backups, chown docroot, reload nginx.
+Nice=10
