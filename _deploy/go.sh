@@ -8,18 +8,38 @@ TMP="$(mktemp -d)"
 git clone --depth 1 "$REPO" "$TMP/r" >/dev/null 2>&1 || { echo "FAIL: git clone"; exit 1; }
 SITE="$TMP/r"; rm -rf "$SITE/_deploy" "$SITE/.git"
 
-# Discover the docroot of the huffmanstacks.com (plural) vhost from running nginx.
-ROOT="$(nginx -T 2>/dev/null | awk '
-  /server[[:space:]]*\{/ { depth++; if (depth==1){buf=""; cap=1} }
-  cap { buf=buf"\n"$0 }
-  /\}/ { if (cap){ depth--; if (depth==0){
-           if (buf ~ /server_name[^;]*[^a-z]huffmanstacks\.com/ && match(buf,/[^a-z_]root[[:space:]]+[^;]+;/)){
-             r=substr(buf,RSTART,RLENGTH); gsub(/root|[[:space:]]|;/,"",r); print r; exit }
-           cap=0 } } }')"
+# Determine the docroot that serves huffmanstacks.com (plural). Priority:
+#   1) explicit override   HS_DOCROOT=/path
+#   2) a vhost whose server_name matches huffmanstacks.com (if one exists)
+#   3) the default_server root — what an unmatched host like huffmanstacks.com
+#      actually hits. This box has NO plural vhost; it falls through to default.
+ROOT="${HS_DOCROOT:-}"
+
+if [ -z "$ROOT" ]; then
+  ROOT="$(nginx -T 2>/dev/null | awk '
+    /server[[:space:]]*\{/ { depth++; if (depth==1){buf=""; cap=1} }
+    cap { buf=buf"\n"$0 }
+    /\}/ { if (cap){ depth--; if (depth==0){
+             if (buf ~ /server_name[^;]*[^a-z]huffmanstacks\.com/ && match(buf,/[^a-z_]root[[:space:]]+[^;]+;/)){
+               r=substr(buf,RSTART,RLENGTH); gsub(/root|[[:space:]]|;/,"",r); print r; exit }
+             cap=0 } } }')"
+fi
+
+if [ -z "$ROOT" ]; then
+  # Fallback: docroot of the default_server (catch-all for unmatched hostnames).
+  ROOT="$(nginx -T 2>/dev/null | awk '
+    /server[[:space:]]*\{/ { depth++; if (depth==1){buf=""; cap=1} }
+    cap { buf=buf"\n"$0 }
+    /\}/ { if (cap){ depth--; if (depth==0){
+             if (buf ~ /listen[^;]*default_server/ && match(buf,/[^a-z_]root[[:space:]]+[^;]+;/)){
+               r=substr(buf,RSTART,RLENGTH); gsub(/root|[[:space:]]|;/,"",r); print r; exit }
+             cap=0 } } }')"
+  [ -n "$ROOT" ] && echo "NOTE: no huffmanstacks.com vhost found — using the default_server root."
+fi
 
 if [ -z "${ROOT:-}" ]; then
-  echo "COULD NOT auto-detect the huffmanstacks.com docroot from nginx."
-  echo "Run _deploy/inspect.sh first and tell Claude the docroot. Aborting (nothing changed)."
+  echo "COULD NOT auto-detect a docroot from nginx."
+  echo "Set HS_DOCROOT=/path explicitly, or run _deploy/inspect.sh. Aborting (nothing changed)."
   exit 2
 fi
 echo "TARGET DOCROOT: $ROOT"
