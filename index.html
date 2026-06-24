@@ -14,65 +14,124 @@
 <meta property="og:description" content="Financial-systems craftsmanship — bookkeeping, tax intelligence, and tools that make complexity clear. The full site opens soon.">
 <meta property="og:site_name" content="HuffmanStacks">
 <meta property="og:image" content="https://huffmanstacks.com/images/landing-hero.png">
-<meta property="og:image:width" content="1594">
-<meta property="og:image:height" content="986">
 <style>
+  @font-face{font-family:"Cormorant Garamond";src:url(/fonts/cormorant-garamond-700.woff2) format("woff2");font-weight:700;font-display:swap}
+  @font-face{font-family:"Cormorant Garamond";src:url(/fonts/cormorant-garamond-600.woff2) format("woff2");font-weight:600;font-display:swap}
+  @font-face{font-family:"Inter";src:url(/fonts/inter-400.woff2) format("woff2");font-weight:400;font-display:swap}
+  @font-face{font-family:"Inter";src:url(/fonts/inter-600.woff2) format("woff2");font-weight:600;font-display:swap}
+
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%}
-  body{background:#080706;overflow:hidden;font-family:Georgia,serif}
+  :root{
+    --gold:#e0b855; --gold-pale:#f4dfa0; --gold-deep:#c89432; --onyx:#17150f;
+    --ivory:#f0f0e0; --soft:#d6d2c6;
+    --serif:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+    --sans:"Inter",-apple-system,"Segoe UI",Roboto,Arial,sans-serif;
+  }
+  body{color:var(--ivory); font-family:var(--serif); -webkit-font-smoothing:antialiased;
+    background:#050403;}
 
-  /* full-viewport stage */
-  .hero{
-    position:fixed; inset:0;
+  /* Full-bleed stage — dark canvas with faint gold light pooling in the
+     corners (echoes the artwork's particle streaks). Adapts to any screen. */
+  .cs{
+    position:fixed; inset:0; overflow:hidden;
     display:flex; align-items:center; justify-content:center;
-    background:#080706;
+    padding:clamp(16px,3.5vw,56px);
+    background:
+      radial-gradient(38% 46% at 6% 82%, rgba(224,184,85,.20), transparent 70%),
+      radial-gradient(34% 50% at 96% 42%, rgba(224,184,85,.16), transparent 70%),
+      radial-gradient(26% 34% at 90% 8%, rgba(224,184,85,.12), transparent 70%),
+      radial-gradient(140% 120% at 50% 45%, #16110a 0%, #0b0907 56%, #050403 100%);
   }
 
-  /* soft blurred fill of the SAME artwork so any leftover space on a given
-     monitor reads as an intentional, premium backdrop — never black bars,
-     never a crop of the real composition. */
-  .hero::before{
-    content:""; position:absolute; inset:0;
-    background:url(/images/landing-hero.png) center / cover no-repeat;
-    filter:blur(46px) brightness(.5) saturate(1.05);
-    transform:scale(1.12);
-    z-index:0;
-  }
-  /* a touch of darkening so the sharp art in front stands out */
-  .hero::after{
-    content:""; position:absolute; inset:0;
-    background:radial-gradient(120% 120% at 50% 50%, transparent 40%, rgba(5,4,3,.55) 100%);
-    z-index:1;
-  }
+  /* corner CH monograms — anchored to the SCREEN corners, scalable */
+  .mono{position:absolute; width:clamp(54px,6vw,112px); height:auto; z-index:4; pointer-events:none;
+    filter:brightness(1.3) saturate(1.22) drop-shadow(0 0 16px rgba(224,184,85,.55))}
+  .mono-tl{left:clamp(12px,2.4vw,44px); top:clamp(12px,2.4vw,44px)}
+  .mono-br{right:clamp(12px,2.4vw,44px); bottom:clamp(12px,2.4vw,44px)}
 
-  /* the EXACT artwork, always shown whole (contain), as large as the screen
-     allows — scales to any resolution with zero cropping. */
-  .frame{position:relative; z-index:2; line-height:0;
-    filter:drop-shadow(0 18px 60px rgba(0,0,0,.6));}
-  .frame img{
-    display:block;
-    max-width:100vw; max-width:100svw;
-    max-height:100vh; max-height:100svh;
-    width:auto; height:auto;
-    user-select:none; -webkit-user-drag:none;
+  /* flanking 3D books — the real asset renders, natural colour, soft-faded
+     edges so each book's gold-streak halo melts into the canvas (exactly how
+     the composite reads). Sized by height so they scale with the viewport. */
+  .book{position:absolute; height:clamp(250px,46vh,560px); width:auto; z-index:1; user-select:none; pointer-events:none;
+    -webkit-mask-image:radial-gradient(132% 132% at 50% 46%, #000 56%, transparent 90%);
+    mask-image:radial-gradient(132% 132% at 50% 46%, #000 56%, transparent 90%);
+    filter:drop-shadow(0 14px 40px rgba(0,0,0,.55))}
+  .book-l{left:clamp(-8px,1.4vw,48px); bottom:clamp(0px,5vh,70px)}
+  .book-r{right:clamp(-8px,1.4vw,40px); top:clamp(0px,4vh,46px)}
+  @media (max-width:1099px){ .book{display:none} }
+
+  /* the gold barber-pole vault frame + overlaid wordmark/text */
+  .panel{
+    position:relative; z-index:2;
+    width:clamp(330px,56vw,1010px);
+    text-align:center;
+    padding:clamp(30px,5vw,66px) clamp(24px,5vw,88px);
+    border:11px solid transparent;
+    border-image:repeating-linear-gradient(45deg,#0c0a07 0 3px,#a07924 3px,#e0b855 6px,#fbeec2,#e0b855 10px,#a07924 13px,#0c0a07 13px 16px) 11;
+    background:
+      radial-gradient(120% 140% at 50% 0%, rgba(201,162,74,.10), transparent 60%),
+      radial-gradient(115% 130% at 50% 50%, rgba(12,10,7,.60) 0%, rgba(12,10,7,.36) 45%, rgba(12,10,7,.10) 75%, transparent 90%),
+      url(/images/coming-soon-vault.png) center / cover no-repeat,
+      var(--onyx);
+    box-shadow:inset 0 0 0 1px rgba(244,223,160,.5), 0 0 50px rgba(224,184,85,.28), 0 22px 70px rgba(0,0,0,.6);
   }
+  @media (max-width:1099px){ .panel{width:min(720px,94vw)} }
 
-  /* invisible clickable region over the "INQUIRIES · CHRIS@HUFFMANSTACK.COM" line */
-  .frame a.mail{position:absolute; left:40%; top:72.5%; width:21%; height:5.2%; z-index:3}
-
-  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  .brand{font-family:var(--serif); font-weight:700; letter-spacing:1px; line-height:1;
+    font-size:clamp(40px,7.2vw,92px);
+    background:linear-gradient(100deg,#e0b855,#fbeec2 50%,#e0b855);
+    -webkit-background-clip:text; background-clip:text; color:transparent}
+  .blurb{margin:clamp(18px,2.6vw,30px) auto 0; max-width:760px; color:var(--soft);
+    font-size:clamp(17px,2.2vw,24px); line-height:1.5}
+  .divider{display:flex; align-items:center; justify-content:center; gap:16px;
+    width:100%; max-width:340px; margin:clamp(20px,3vw,36px) auto 0}
+  .divider::before,.divider::after{content:""; flex:1; height:1px;
+    background:linear-gradient(90deg,transparent,#c9a24a8c 60%,#e6c98ab3)}
+  .divider::after{transform:scaleX(-1)}
+  .gem{flex:none; width:9px; height:9px; transform:rotate(45deg);
+    background:linear-gradient(135deg,#f4dfa0,#e0b855 42%,#c89432 70%,#a07924); box-shadow:0 0 8px #c9a24a59}
+  .eyebrow{margin:clamp(18px,2.6vw,30px) auto 0; font-family:var(--sans);
+    text-transform:uppercase; letter-spacing:3px; color:var(--gold-deep); font-size:clamp(11px,1.3vw,15px)}
+  .tagline{margin-top:14px; font-style:italic; color:var(--gold); font-size:clamp(23px,3.5vw,38px)}
+  .inquiries{margin-top:clamp(26px,4vw,54px); font-family:var(--sans);
+    text-transform:uppercase; letter-spacing:2px; color:#fff; font-size:clamp(12px,1.2vw,14px)}
+  .inquiries a{color:var(--gold); text-decoration:none; transition:color .2s}
+  .inquiries a:hover{color:var(--gold-pale)}
+  @media (max-width:560px){
+    .brand{letter-spacing:.5px}
+    .eyebrow{letter-spacing:2px}
+    .inquiries{letter-spacing:1px; line-height:1.6}
+  }
 </style>
 </head>
 <body>
-  <main class="hero">
-    <h1 class="sr">HuffmanStacks — Quiet precision.</h1>
-    <p class="sr">Financial-systems craftsmanship — bookkeeping, tax intelligence, and the tools that turn complexity into clear, defensible answers. The full site opens soon. Something refined is on the way. Inquiries: Chris@HuffmanStack.com</p>
-    <div class="frame">
-      <img src="/images/landing-hero.png"
-           alt="HuffmanStacks — financial-systems craftsmanship: bookkeeping, tax intelligence, and the tools that turn complexity into clear, defensible answers. The full site opens soon. Something refined is on the way. Quiet precision. Inquiries: Chris@HuffmanStack.com"
-           width="1594" height="986" fetchpriority="high" decoding="async">
-      <a class="mail" href="mailto:Chris@HuffmanStack.com" aria-label="Email Chris at HuffmanStack dot com"></a>
-    </div>
+  <main class="cs">
+    <svg class="mono mono-tl" viewBox="0 0 100 100" role="img" aria-label="HuffmanStacks CH monogram">
+      <defs><linearGradient id="m1" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E6C98A"/><stop offset=".5" stop-color="#C9A24A"/><stop offset="1" stop-color="#8A6418"/></linearGradient></defs>
+      <rect x="2" y="2" width="96" height="96" rx="10" fill="none" stroke="url(#m1)" stroke-width="2"/>
+      <rect x="8" y="8" width="84" height="84" rx="7" fill="none" stroke="url(#m1)" stroke-width="1" opacity=".55"/>
+      <text x="50" y="68" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="46" fill="url(#m1)">CH</text>
+    </svg>
+    <svg class="mono mono-br" viewBox="0 0 100 100" role="img" aria-label="HuffmanStacks CH monogram">
+      <defs><linearGradient id="m2" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E6C98A"/><stop offset=".5" stop-color="#C9A24A"/><stop offset="1" stop-color="#8A6418"/></linearGradient></defs>
+      <rect x="2" y="2" width="96" height="96" rx="10" fill="none" stroke="url(#m2)" stroke-width="2"/>
+      <rect x="8" y="8" width="84" height="84" rx="7" fill="none" stroke="url(#m2)" stroke-width="1" opacity=".55"/>
+      <text x="50" y="68" text-anchor="middle" font-family="Georgia, serif" font-weight="700" font-size="46" fill="url(#m2)">CH</text>
+    </svg>
+
+    <img class="book book-l" src="/images/book-software-blueprint.png" alt="" aria-hidden="true">
+    <img class="book book-r" src="/images/book-accounting-ledger.png" alt="" aria-hidden="true">
+
+    <section class="panel">
+      <h1 class="brand">HuffmanStacks</h1>
+      <p class="blurb">Financial-systems craftsmanship — bookkeeping, tax intelligence, and the tools that turn complexity into clear, defensible answers. The full site opens soon.</p>
+      <div class="divider" aria-hidden="true"><span class="gem"></span></div>
+      <p class="eyebrow">Something refined is on the way</p>
+      <p class="tagline">Quiet precision.</p>
+      <div class="divider" aria-hidden="true"><span class="gem"></span></div>
+      <p class="inquiries">Inquiries · <a href="mailto:Chris@HuffmanStack.com">Chris@HuffmanStack.com</a></p>
+    </section>
   </main>
 </body>
 </html>
