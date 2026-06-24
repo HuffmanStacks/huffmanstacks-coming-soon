@@ -29,10 +29,10 @@
     font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;
     overflow:hidden;
   }
-  .hero{position:relative;line-height:0}
-  .hero img{display:block;max-width:100vw;max-width:100svw;max-height:100vh;max-height:100svh;width:auto;height:auto;user-select:none;-webkit-user-drag:none}
+  .hero{position:relative;width:100vw;height:100vh;height:100svh;line-height:0}
+  .hero img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;user-select:none;-webkit-user-drag:none}
   /* invisible clickable region over the "INQUIRIES · CHRIS@HUFFMANSTACK.COM" line */
-  a.mail{position:absolute;left:38%;top:70.5%;width:24%;height:5.5%;z-index:2}
+  a.mail{position:absolute;left:38%;top:72%;width:24%;height:6.5%;z-index:2}
   /* screen-reader-only real text for SEO + accessibility */
   .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
   @media (max-width:760px){
