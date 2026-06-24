@@ -35,8 +35,11 @@
   a.mail{position:absolute;left:38%;top:72%;width:24%;height:6.5%;z-index:2}
   /* screen-reader-only real text for SEO + accessibility */
   .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-  @media (max-width:760px){
-    body{align-items:center}
+  /* Best of both: edge-to-edge (cover) while the viewport is wider than the
+     artwork; once it's narrower/taller (phones, portrait), show the WHOLE
+     composition (contain) so nothing gets cropped. */
+  @media (max-aspect-ratio:1594/986){
+    .hero img{object-fit:contain}
   }
 </style>
 </head>
