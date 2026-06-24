@@ -20,27 +20,30 @@
   *{margin:0;padding:0;box-sizing:border-box}
   html,body{height:100%}
   body{
-    background:#0a0908;
+    background:#080706;
     background-image:
-      radial-gradient(120% 90% at 50% 42%, #16110a 0%, #0a0908 62%, #060504 100%);
+      radial-gradient(130% 100% at 50% 45%, #16110a 0%, #0b0907 55%, #050403 100%);
     color:#e6c98a;
     display:flex;align-items:center;justify-content:center;
     min-height:100vh;min-height:100svh;
     font-family:"Cormorant Garamond",Georgia,"Times New Roman",serif;
     overflow:hidden;
   }
-  .hero{position:relative;width:100vw;height:100vh;height:100svh;line-height:0}
-  .hero img{display:block;width:100%;height:100%;object-fit:cover;object-position:center;user-select:none;-webkit-user-drag:none}
-  /* invisible clickable region over the "INQUIRIES · CHRIS@HUFFMANSTACK.COM" line */
-  a.mail{position:absolute;left:38%;top:72%;width:24%;height:6.5%;z-index:2}
-  /* screen-reader-only real text for SEO + accessibility */
-  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
-  /* Best of both: edge-to-edge (cover) while the viewport is wider than the
-     artwork; once it's narrower/taller (phones, portrait), show the WHOLE
-     composition (contain) so nothing gets cropped. */
-  @media (max-aspect-ratio:1594/986){
-    .hero img{object-fit:contain}
+  /* The hero box shrink-wraps the image so nothing is ever cropped, scaling
+     it as large as the viewport allows (fills width OR height, whichever
+     binds). The matching near-black backdrop blends any leftover space so it
+     still reads full-screen, with both CH monograms fully intact. */
+  .hero{position:relative;line-height:0}
+  .hero img{
+    display:block;
+    max-width:100vw;max-width:100svw;
+    max-height:100vh;max-height:100svh;
+    width:auto;height:auto;
+    user-select:none;-webkit-user-drag:none;
   }
+  /* invisible clickable region over the "INQUIRIES · CHRIS@HUFFMANSTACK.COM" line */
+  a.mail{position:absolute;left:38%;top:70.5%;width:24%;height:5.5%;z-index:2}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
 </style>
 </head>
 <body>
