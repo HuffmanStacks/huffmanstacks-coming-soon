@@ -1,10 +1,4 @@
-# HuffmanStacks — PRE-LAUNCH (stealth).
-# The site is not yet open. Nothing is to be crawled or indexed.
-# No sitemap is published while in this state.
-#
-# AT LAUNCH, replace the body below with:
-#   User-agent: *
-#   Allow: /
-#   Sitemap: https://huffmanstacks.com/sitemap-index.xml
+# HuffmanStacks — public.
 User-agent: *
-Disallow: /
+Allow: /
+Sitemap: https://huffmanstacks.com/sitemap.xml
